@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning Website</title>
+</head>
+
+<body>
+
+    <div th:utext="${headingMessage}"></div>
+
+    <p th:text="${welcomeMessage}"></p>
+
+    <div th:if="${loggedIn}">
+        <p>Welcome back, student!</p>
+    </div>
+
+    <div th:unless="${loggedIn}">
+        <p>Please log in to access the lessons</p>
+    </div>
+
+</body>
+</html>
