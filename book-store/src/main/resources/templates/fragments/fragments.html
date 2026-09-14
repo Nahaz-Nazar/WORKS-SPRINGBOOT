@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head></head>
+<body>
+
+    <!-- Top Navigation Bar Fragment -->
+    <nav th:fragment="navbar" style="background-color: #2c3e50; padding: 15px; font-family: Arial, sans-serif;">
+        <a href="/home" style="color: white; margin-right: 20px; text-decoration: none; font-weight: bold;">Home</a>
+        <a href="/books" style="color: white; text-decoration: none; font-weight: bold;">Books</a>
+    </nav>
+
+    <!-- Footer Fragment -->
+    <footer th:fragment="footer" style="background-color: #34495e; color: white; text-align: center; padding: 15px; font-family: Arial, sans-serif; position: fixed; bottom: 0; width: 100%; left: 0;">
+        <p style="margin: 0;">© 2025 BookStore</p>
+    </footer>
+
+</body>
+</html>

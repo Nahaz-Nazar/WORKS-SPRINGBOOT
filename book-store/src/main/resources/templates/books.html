@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>BookStore - Featured Book</title>
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #f8f9fa;">
+
+    <!-- Include Navbar Layout Component -->
+    <div th:replace="~{fragments/fragments :: navbar}"></div>
+
+    <div style="padding: 40px; max-width: 500px; margin: 40px auto; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        <h1 style="color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 0;">Featured Book Details</h1>
+        
+        <p style="font-size: 1.1rem; margin: 12px 0;"><b>Title:</b> <span th:text="${book.title}" style="color: #34495e;"></span></p>
+        <p style="font-size: 1.1rem; margin: 12px 0;"><b>Author:</b> <span th:text="${book.author}" style="color: #34495e;"></span></p>
+        <p style="font-size: 1.1rem; margin: 12px 0;"><b>Price:</b> ₹<span th:text="${book.price}" style="color: #27ae60; font-weight: bold;"></span></p>
+    </div>
+
+    <!-- Include Footer Layout Component -->
+    <div th:replace="~{fragments/fragments :: footer}"></div>
+
+</body>
+</html>
