@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Student List</title>
+    <style>
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>All Students</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through the students list -->
+            <tr th:each="std : ${students}">
+                <td th:text="${std.rollNo}"></td>
+                <td th:text="${std.name}"></td>
+                <td th:text="${std.marks}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
