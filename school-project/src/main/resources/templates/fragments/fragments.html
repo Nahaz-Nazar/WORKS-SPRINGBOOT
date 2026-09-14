@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head></head>
+<body>
+
+    <!-- 1. Navigation Bar Component -->
+    <nav th:fragment="navbar" style="background-color: #333; padding: 15px;">
+        <a href="/" style="color: white; margin-right: 20px; text-decoration: none; font-weight: bold;">Home</a>
+        <a href="/product-details" style="color: white; text-decoration: none; font-weight: bold;">Product Details</a>
+    </nav>
+
+    <!-- 2. Footer Component -->
+    <footer th:fragment="footer" style="background-color: #f1f1f1; text-align: center; padding: 10px; margin-top: 20px; position: fixed; bottom: 0; width: 100%;">
+        <p>© 2026 School Project. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

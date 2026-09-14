@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Home Page</title>
+</head>
+<body style="margin: 0; font-family: Arial, sans-serif;">
+
+    <!-- Include Navbar -->
+    <div th:replace="~{fragments/fragments :: navbar}"></div>
+
+    <div style="padding: 20px;">
+        <h1>Welcome to My App</h1>
+        <p>Click below to learn more about our product:</p>
+        <a href="/product-details" style="display: inline-block; padding: 10px 15px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Go to Product Details Page</a>
+    </div>
+
+    <!-- Include Footer -->
+    <div th:replace="~{fragments/fragments :: footer}"></div>
+
+</body>
+</html>
