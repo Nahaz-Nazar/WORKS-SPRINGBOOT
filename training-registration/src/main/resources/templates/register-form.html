@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Event Registration</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 450px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .error-msg { color: #d9534f; font-size: 0.9em; font-weight: bold; display: block; margin-top: 5px; }
+        button { background-color: #0275d8; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; width: 100%; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Event Registration</h2>
+        <form th:action="@{/register}" th:object="${registrationForm}" method="post">
+            <div class="form-group">
+                <label>Full Name:</label>
+                <input type="text" th:field="*{name}" />
+                <span class="error-msg" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+            <div class="form-group">
+                <label>Gmail Address:</label>
+                <input type="text" th:field="*{email}" placeholder="example@gmail.com"/>
+                <span class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+            <div class="form-group">
+                <label>Address (Must include 'India'):</label>
+                <textarea th:field="*{address}" rows="3"></textarea>
+                <span class="error-msg" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+            </div>
+            <button type="submit">Submit Registration</button>
+        </form>
+    </div>
+</body>
+</html>
