@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Book Store Collection Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 650px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .btn { display: inline-block; background-color: #007bff; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registered Books Inventory</h2>
+        <a href="/book/new" class="btn">➕ Register Another Book</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Book Title</th>
+                    <th>Author</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${bookList}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.title}" style="font-weight:bold;"></td>
+                    <td th:text="${item.author}"></td>
+                    <td th:text="'₹' + ${item.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
