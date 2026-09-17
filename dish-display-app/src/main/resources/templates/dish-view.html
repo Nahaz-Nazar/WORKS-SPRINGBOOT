@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Dish Information</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #fcf8f2; display: flex; justify-content: center; }
+        .card { max-width: 400px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #e67e22; width: 100%; }
+        h1 { color: #d35400; margin: 10px 0; }
+        .price { font-size: 1.8rem; color: #27ae60; font-weight: bold; margin: 15px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h3>Menu Selection</h3>
+        <!-- Displays the dynamic variables extracted from URL path mapping -->
+        <h1 th:text="${name}">Dish Name</h1>
+        <div class="price" th:text="'₹' + ${price}">₹0.00</div>
+    </div>
+
+</body>
+</html>
