@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Stock Control Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { max-width: 700px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 30px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        h3 { color: #2c3e50; border-left: 5px solid #007bff; padding-left: 10px; margin-top: 20px; }
+        .btn { display: inline-block; background-color: #28a745; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Mobile Stock Dashboard Analytics</h2>
+        <a href="/mobile/new" class="btn">➕ Register Another Phone</a>
+
+        <!-- REQUIREMENT 3: Total number of phones grouped by type -->
+        <h3>📊 Inventory Allocation By Type</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Operating System Platform</th>
+                    <th>Total Units Tracked</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="row : ${typeAggregation}">
+                    <td th:text="${row[0]}" style="font-weight: bold;"></td>
+                    <td th:text="${row[1]}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- REQUIREMENT 1: All phone names and their prices -->
+        <h3>📱 Full Catalog Projection</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Mobile Phone Identity</th>
+                    <th>Price Spec</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="phone : ${catalogItems}">
+                    <td th:text="${phone.name}"></td>
+                    <td th:text="'₹' + ${phone.price}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- REQUIREMENT 2: Only phones that cost less than ₹20,000 -->
+        <h3>💰 Value Tier Offers (Under ₹20,000)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Model Name</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Platform</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="budgetPhone : ${budgetItems}" style="background-color: #f9fff9;">
+                    <td th:text="${budgetPhone.name}" style="font-weight: bold; color: #27ae60;"></td>
+                    <td th:text="${budgetPhone.brand}"></td>
+                    <td th:text="'₹' + ${budgetPhone.price}"></td>
+                    <td th:text="${budgetPhone.type}"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(budgetItems)}">
+                    <td colspan="4" style="text-align: center; color: #e74c3c;">No active items fall into this budget ceiling currently.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
