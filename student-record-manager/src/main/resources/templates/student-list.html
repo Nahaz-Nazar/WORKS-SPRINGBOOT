@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Registry Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .box { max-width: 800px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin: 0 auto; }
+        .action-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .filter-panel input[type="text"] { padding: 8px; width: 220px; border: 1px solid #ccc; border-radius: 4px; }
+        .filter-panel button { padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .filter-panel a { padding: 8px 12px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; margin-left: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .add-btn { background-color: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; }
+        .edit-link { color: #007bff; text-decoration: none; margin-right: 12px; font-weight: bold; }
+        .delete-link { color: #dc3545; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <div class="action-header">
+            <h2>School Records Control Panel</h2>
+            <a href="/student/new" class="add-btn">➕ Add New Student</a>
+        </div>
+
+        <!-- Dynamic Live Query Control Module -->
+        <div class="filter-panel">
+            <form th:action="@{/students}" method="get">
+                <input type="text" name="search" th:value="${queryValue}" placeholder="Search student by name..." required autocomplete="off"/>
+                <button type="submit">Filter Name</button>
+                <a th:if="${queryValue != null}" th:href="@{/students}">Clear Filter</a>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tracking ID</th>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Age</th>
+                    <th>Control Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="student : ${studentCollection}">
+                    <td th:text="${student.id}"></td>
+                    <td th:text="${student.name}" style="font-weight: bold;"></td>
+                    <td th:text="${student.studentClass}"></td>
+                    <td th:text="${student.age}"></td>
+                    <td>
+                        <a th:href="@{/student/edit/{id}(id=${student.id})}" class="edit-link">✏️ Edit</a>
+                        <a th:href="@{/student/delete/{id}(id=${student.id})}" class="delete-link" 
+                           onclick="return confirm('Are you sure you want to permanently erase this student tracking profile?');">🗑️ Delete</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(studentCollection)}">
+                    <td colspan="5" style="text-align: center; color: #888; padding: 20px;">No student records match the active criteria layout.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
