@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Welcome to the Library</title>
+</head>
+<body>
+    <div style="padding: 20px; background-color: #f0f8ff; border: 1px solid #008b8b; display: inline-block;">
+        <h2>Registration Complete!</h2>
+        <p>Welcome, <span th:text="${memberName}">[Name]</span>! Your library membership has been created.</p>
+    </div>
+    <br/><br/>
+    <a href="/register">Register another member</a>
+</body>
+</html>
