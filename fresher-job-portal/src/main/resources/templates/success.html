@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Registration Successful</title>
+</head>
+<body>
+    <div style="color: green; border: 1px solid green; padding: 15px; width: 50%;">
+        <h3>Registration Successful!</h3>
+        <p>Thanks for registering, <b th:text="${name}">[Full Name]</b>! You can now apply for jobs.</p>
+    </div>
+    <br/>
+    <a href="/register">Go Back to Registration</a>
+</body>
+</html>

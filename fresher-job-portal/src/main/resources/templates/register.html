@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Fresher Registration</title>
+</head>
+<body>
+    <h2>Fresher Job Portal - Register</h2>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div>
+            <label>Full Name:</label>
+            <input type="text" th:field="*{fullName}" required />
+        </div><br/>
+        <div>
+            <label>Mobile Number:</label>
+            <input type="tel" th:field="*{mobileNumber}" required />
+        </div><br/>
+        <div>
+            <label>Email Address:</label>
+            <input type="email" th:field="*{email}" required />
+        </div><br/>
+        <div>
+            <label>Password:</label>
+            <input type="password" th:field="*{password}" required />
+        </div><br/>
+        <button type="submit">Register</button>
+    </form>
+</body>
+</html>
