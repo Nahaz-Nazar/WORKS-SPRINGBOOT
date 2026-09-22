@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+    <h1>Welcome Page</h1>
+    <h2>Hello, <span th:text="${user.firstName} + ' ' + ${user.lastName}">User</span>!</h2>
+    <p>Your address: <span th:text="${user.address}">Address</span></p>
+    <hr/>
+    <!-- Include a Logout link on the welcome page -->
+    <a href="/logout">Logout</a>
+</body>
+</html>

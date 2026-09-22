@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Sign Up</title>
+    <script type="text/javascript">
+        function validatePasswordMatch(event) {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var errorDiv = document.getElementById("jsError");
+
+            if (password !== confirmPassword) {
+                event.preventDefault(); // Stop form submission
+                errorDiv.innerText = "Error: Passwords do not match!";
+                errorDiv.style.color = "red";
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <h2>User Registration (Sign Up Page)</h2>
+    <div id="jsError"></div>
+    
+    <form th:action="@{/signup}" th:object="${user}" method="post" onsubmit="return validatePasswordMatch(event)">
+        <div>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required />
+        </div><br/>
+        <div>
+            <label>Password:</label>
+            <input type="password" id="password" th:field="*{password}" required />
+        </div><br/>
+        <div>
+            <label>Confirm Password:</label>
+            <input type="password" id="confirmPassword" required />
+        </div><br/>
+        <div>
+            <label>Full Name:</label>
+            <input type="text" th:field="*{firstName}" required />
+        </div><br/>
+        <div>
+            <label>Last Name:</label>
+            <input type="text" th:field="*{lastName}" required />
+        </div><br/>
+        <div>
+            <label>Address:</label>
+            <textarea th:field="*{address}" required></textarea>
+        </div><br/>
+        <button type="submit">Sign Up</button>
+    </form>
+</body>
+</html>
