@@ -13,7 +13,6 @@ public class ShopApplication {
         SpringApplication.run(ShopApplication.class, args);
     }
 
-    // ആപ്പ് റൺ ചെയ്യുമ്പോൾ തന്നെ 2 ഡാറ്റ ഓട്ടോമാറ്റിക് ആയി ആഡ് ചെയ്യും (ടെസ്റ്റ് ചെയ്യാൻ എളുപ്പത്തിന്)
     @Bean
     public CommandLineRunner demoData(ProductRepository repository) {
         return args -> {
