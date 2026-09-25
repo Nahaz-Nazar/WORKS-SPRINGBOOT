@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Secure Auth System Testing Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 40px; background-color: #f5f7fa; color: #333; }
+        .container { max-width: 600px; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        input { width: 90%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-right: 10px; }
+        button:hover { background-color: #0056b3; }
+        .logout-btn { background-color: #dc3545; }
+        .logout-btn:hover { background-color: #bd2130; }
+        .profile-btn { background-color: #28a745; }
+        .profile-btn:hover { background-color: #218838; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; min-height: 40px; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; color: #444; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. REGISTRATION SECTION -->
+    <div class="container">
+        <h2>1. Registration Section</h2>
+        <form id="regForm">
+            <input type="text" id="regFirst" placeholder="First Name" required><br>
+            <input type="text" id="regLast" placeholder="Last Name" required><br>
+            <input type="text" id="regMobile" placeholder="Mobile Number" required><br>
+            <input type="email" id="regEmail" placeholder="Email Address" required><br>
+            <input type="password" id="regPass" placeholder="Secure Password" required><br>
+            <button type="submit">Register Account</button>
+        </form>
+    </div>
+
+    <!-- 2. LOGIN & PROTECTED ACTIONS SYSTEM -->
+    <div class="container">
+        <h2>2. Authentication Session Dashboard</h2>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email Address" required><br>
+            <input type="password" id="loginPass" placeholder="Password" required><br>
+            <button type="submit">Login System</button>
+        </form>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        
+        <button class="profile-btn" onclick="fetchProfile()">Access Secure Profile Route</button>
+        <button class="logout-btn" onclick="executeLogout()">Terminate Session (Logout)</button>
+    </div>
+
+    <!-- 3. REAL TIME OUTPUT GRAPH -->
+    <div class="container">
+        <h2>Real-Time Response Monitor</h2>
+        <pre id="outputConsole">{ "status": "Awaiting operations..." }</pre>
+    </div>
+
+    <script>
+        let sessionToken = "";
+
+        const monitor = (data) => {
+            document.getElementById("outputConsole").innerText = JSON.stringify(data, null, 2);
+        };
+
+        // HANDLE ACCOUNT CREATION (POST)
+        document.getElementById("regForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const payload = {
+                firstName: document.getElementById("regFirst").value,
+                lastName: document.getElementById("regLast").value,
+                mobileNumber: document.getElementById("regMobile").value,
+                email: document.getElementById("regEmail").value,
+                password: document.getElementById("regPass").value
+            };
+            fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(resObj => monitor(resObj.body))
+            .catch(err => monitor({ error: err.message }));
+        });
+
+        // HANDLE ACCOUNT LOGIN AND CAPTURE SECURED TOKEN (POST)
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const payload = {
+                email: document.getElementById("loginEmail").value,
+                password: document.getElementById("loginPass").value
+            };
+            fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(resObj => {
+                if(resObj.status === 200 && resObj.body.token) {
+                    sessionToken = resObj.body.token; // Save unique generated token locally
+                }
+                monitor(resObj.body);
+            })
+            .catch(err => monitor({ error: err.message }));
+        });
+
+        // ACCESS THE GUARDED ROUTE VIA ATTACHED HEADER VALUE (GET)
+        function fetchProfile() {
+            fetch("/api/profile", {
+                method: "GET",
+                headers: { 
+                    "Authorization": sessionToken,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(resObj => monitor(resObj.body))
+            .catch(err => monitor({ error: err.message }));
+        }
+
+        // DEACTIVATE TOKEN LIFECYCLE ROUTE (POST)
+        function executeLogout() {
+            fetch("/api/auth/logout", {
+                method: "POST",
+                headers: { 
+                    "Authorization": sessionToken,
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.json().then(data => ({ status: res.status, body: data })))
+            .then(resObj => {
+                if(resObj.status === 200) {
+                    sessionToken = ""; // Wipe local active reference
+                }
+                monitor(resObj.body);
+            })
+            .catch(err => monitor({ error: err.message }));
+        }
+    </script>
+</body>
+</html>
