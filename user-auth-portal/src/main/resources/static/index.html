@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Portal System Verification Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f2f5; }
+        .card { background: white; padding: 25px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); max-width: 500px; }
+        input { width: 95%; padding: 10px; margin: 6px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; color: white; margin-top: 10px; }
+        .btn-blue { background: #007bff; }
+        .btn-red { background: #dc3545; }
+        pre { background: #222; color: #fff; padding: 12px; border-radius: 4px; max-width: 500px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>1. User Registration (With Password Confirmation)</h2>
+        <form id="registerForm">
+            <input type="text" id="regUser" placeholder="Username" required><br>
+            <input type="email" id="regEmail" placeholder="Email Address" required><br>
+            <input type="password" id="regPass" placeholder="Password" required><br>
+            <input type="password" id="regConfPass" placeholder="Confirm Password" required><br>
+            <button type="submit" class="btn-blue">Register Account</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>2. User Login & Secure Token Verification</h2>
+        <form id="loginForm">
+            <input type="email" id="logEmail" placeholder="Email Address" required><br>
+            <input type="password" id="logPass" placeholder="Password" required><br>
+            <button type="submit" class="btn-blue">Log In</button>
+        </form>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <button class="btn-red" onclick="triggerLogout()">Log Out (Invalidate Token)</button>
+    </div>
+
+    <div class="card">
+        <h2>Real-Time Server Console Log</h2>
+        <pre id="consoleLog">{ "status": "System online. Awaiting data..." }</pre>
+    </div>
+
+    <script>
+        let storedToken = "";
+        const logger = (data) => document.getElementById("consoleLog").innerText = JSON.stringify(data, null, 2);
+
+        // HANDLE ACCOUNT CREATION WITH CONFIRMATION CONTROLS
+        document.getElementById("registerForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            logger({ status: "Processing registration..." });
+            fetch("/api/auth/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: document.getElementById("regUser").value,
+                    email: document.getElementById("regEmail").value,
+                    password: document.getElementById("regPass").value,
+                    confirmPassword: document.getElementById("regConfPass").value
+                })
+            })
+            .then(res => res.json().then(data => logger(data)))
+            .catch(err => logger({ error: err.message }));
+        });
+
+        // HANDLE SESSION CREATION AND SAVE ASSIGNED TOKEN
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            logger({ status: "Authenticating..." });
+            fetch("/api/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: document.getElementById("logEmail").value,
+                    password: document.getElementById("logPass").value
+                })
+            })
+            .then(res => res.json().then(data => {
+                if(data.token) {
+                    storedToken = data.token; // Save unique generated token locally
+                }
+                logger(data);
+            }))
+            .catch(err => logger({ error: err.message }));
+        });
+
+        // SECURE LOGOUT: VALIDATES TOKEN DELETION LIFECYCLE
+        function triggerLogout() {
+            logger({ status: "Processing secure token logout..." });
+            fetch("/api/auth/logout", {
+                method: "POST",
+                headers: { "Authorization": storedToken }
+            })
+            .then(res => res.json().then(data => {
+                if(res.status === 200) {
+                    storedToken = ""; // Clear token value reference locally upon successful logout
+                }
+                logger(data);
+            }))
+            .catch(err => logger({ error: err.message }));
+        }
+    </script>
+</body>
+</html>
